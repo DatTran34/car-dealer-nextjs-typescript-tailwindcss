@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ["links.papareact.com","fakestoreapi.com","fakeimg.pl"]
+  },
 }
+
+module.exports = nextConfig
