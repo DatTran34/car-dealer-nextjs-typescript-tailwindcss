@@ -6,7 +6,7 @@ import DealsContainer from "./DealsContainer";
 
 function ProductFeed({ cars }: { cars: ICar[] }) {
   return (
-    <div className="p-4 flex flex-col space-y-4 mx-auto">
+    <div className="py-4 flex flex-col space-y-4 mx-auto">
         {/* <DealsContainer/> */}
         <ProductContainer cars={cars}/>
         <ProductContainer cars={cars}/>
