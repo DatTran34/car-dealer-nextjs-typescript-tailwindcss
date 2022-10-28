@@ -5,11 +5,20 @@ import React from "react";
 import { useState } from "react";
 import AccordionProduct from "../components/ProductPage/AccordionProduct";
 import SwiperProduct from "../components/ProductPage/SwiperProduct";
-
+import { useRouter } from 'next/router'
 import type { GetServerSideProps } from "next";
+import ErrorPage from "next/error";
+const ProductPage = () => {
+  
+  const object = useRouter().query.object;
 
-const ProductPage = ({ cars }: { cars: ICar[] }) => {
-  const [car, setCar] = useState<ICar>(cars[0]);
+  if(!object)
+  {
+    return <ErrorPage statusCode={404} />;
+  }
+
+  const car : ICar = JSON.parse(object.toString()!)
+
 
   return (
     <div className="bg-[#F1F3F4]">
@@ -26,7 +35,7 @@ const ProductPage = ({ cars }: { cars: ICar[] }) => {
                 {car.car} {car.car_model}
               </div>
               <div>
-                {car.price.slice(1,car.price.length - 1)}
+                {car.price}
               </div>
             </div>
           </div>
