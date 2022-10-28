@@ -1,4 +1,4 @@
-import React from "react";
+
 import ProductContainer from "./ProductContainer";
 import { ICar } from "../Types/model";
 import DealsContainer from "./DealsContainer";

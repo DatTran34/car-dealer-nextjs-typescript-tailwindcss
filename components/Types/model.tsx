@@ -5,6 +5,6 @@ export interface ICar {
     car_color: string,
     car_model_year: number,
     car_vin: string,
-    price: number,
+    price: string,
     availability: boolean
 }
