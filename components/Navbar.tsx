@@ -10,7 +10,7 @@ function Navbar() {
       </Link>
       
       <div>DT Auto</div>
-      <div className="flex-grow bg-blue-100 text-[#777C91] flex flex-row space-x-4 p-2 rounded">
+      <div className="flex-grow bg-blue-100 text-[#777C91] flex flex-row space-x-4 p-2 rounded-[7px]">
         <SearchIcon/>
         <input
           type="text"
