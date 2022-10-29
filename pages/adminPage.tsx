@@ -3,7 +3,11 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Input } from "@material-tailwind/react";
 import { Textarea } from "@material-tailwind/react";
+import { GetServerSideProps } from "next";
+import { ICar } from "../components/Types/model";
+////{ cars }: { cars: ICar[] }
 function adminPage() {
+
   return (
     <div className="bg-[#F1F3F4]">
       <Head>
@@ -65,5 +69,17 @@ function adminPage() {
     </div>
   );
 }
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const res = await fetch("https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims");
+//   const data = await JSON.stringify(res.json()).slice(11,JSON.stringify(res.json()).length - 3)
+//   console.log(await JSON.stringify(res.json()).slice(11,JSON.stringify(res.json()).length - 3))
+//   const cars: ICar[] = await JSON.parse(data);
+//   return {
+//     props: {
+//       cars,
+//     },
+//   };
+// };
 
 export default adminPage;

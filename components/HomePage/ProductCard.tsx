@@ -14,14 +14,14 @@ function ProductCard({ car }: { car: ICar }) {
         />
       </div>
       <div className="text-xl">
-        {car.car} {car.car_model}
+        {car.model_make_display} {car.model_name}
       </div>
       <div className="text-sm text-gray-400">
-        {car.car} {car.car_color} {car.car_model_year}
+        {car.model_make_display} {car.model_year}
       </div>
       <div className="flex flex-row space-x-2 items-center">
         <TagIcon />
-        <p className="text-base text-light-green">{car.price}</p>
+        <p className="text-base text-light-green">$20,555</p>
       </div>
       <div className="bg-light-green p-2 text-white cursor-pointer">
         <Link

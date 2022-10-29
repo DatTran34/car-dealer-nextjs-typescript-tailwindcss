@@ -32,10 +32,10 @@ const ProductPage = () => {
             <SwiperProduct />
             <div className="bg-white rounded-lg h-full p-4">
               <div className="text-4xl">
-                {car.car} {car.car_model}
+                {car.model_make_display} {car.model_name}
               </div>
               <div>
-                {car.price}
+                $20,555
               </div>
             </div>
           </div>
