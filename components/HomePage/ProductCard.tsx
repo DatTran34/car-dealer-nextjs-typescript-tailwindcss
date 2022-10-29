@@ -2,6 +2,7 @@ import React from "react";
 import { ICar } from "../Types/model";
 import Image from "next/image";
 import { TagIcon } from "../Icon";
+import Link from "next/link";
 function ProductCard({ car }: { car: ICar }) {
   return (
     <div className="relative b flex flex-col z-30 space-y-2">
@@ -21,6 +22,16 @@ function ProductCard({ car }: { car: ICar }) {
       <div className="flex flex-row space-x-2 items-center">
         <TagIcon />
         <p className="text-base text-light-green">{car.price}</p>
+      </div>
+      <div className="bg-light-green p-2 text-white cursor-pointer">
+        <Link
+          href={{
+            pathname: "/productPage",
+            query: { object: JSON.stringify(car) }, // the data
+          }}
+        >
+          <div>See Detail</div>
+        </Link>
       </div>
     </div>
   );

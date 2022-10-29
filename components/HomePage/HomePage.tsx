@@ -6,7 +6,7 @@ import { ICar } from "../Types/model";
 
 function HomePage({cars}: {cars:ICar[]}) {
   return (
-    <div className="m-auto">
+    <div className="">
       <Banner/>
       <ProductFeed cars={cars}/>
     </div>
