@@ -42,7 +42,7 @@ function ProductContainer({ cars }: { cars: ICar[] }) {
         }}
       >
         {cars.slice(0, 10).map((car, i) => (
-          <SwiperSlide>
+          <SwiperSlide key={i}>
             <ProductCard car={car} />
           </SwiperSlide>
         ))}

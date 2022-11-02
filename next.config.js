@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["links.papareact.com","fakestoreapi.com","fakeimg.pl"]
+    domains: ["links.papareact.com","fakestoreapi.com","fakeimg.pl","carqueryapi.com"]
   },
 }
 
