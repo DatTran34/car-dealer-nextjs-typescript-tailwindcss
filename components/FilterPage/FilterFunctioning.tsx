@@ -5,7 +5,7 @@ import { ICar } from "../Types/model";
     return Array.from(
       new Set(
         data.map((car, idx) => {
-          return car.car;
+          return car.model_make_display;
         })
       )
     );
@@ -15,7 +15,7 @@ import { ICar } from "../Types/model";
     return Array.from(
         new Set(
             data.map((car, idx) => {
-            return car.car_model;
+            return car.model_name;
           })
         )
       );
@@ -23,20 +23,21 @@ import { ICar } from "../Types/model";
 
   // Handle filter function
   export const filterSelectedBarndOptions = (array: ICar[], option: string) => {
-    return array.filter((item) => item.car === option);
+    return array.filter((item) => item.model_make_display === option);
   };
 
   export const filterSelectedModelOptions = (array: ICar[], option: string) => {
-    return array.filter((item) => item.car_model === option);
+    return array.filter((item) => item.model_name === option);
   };
 
   export const filterSelectedSortByOptions = (array: ICar[], option: string) => {
-      if(option === "Low To High")
-      {
-        return array.sort((a,b) => {return (parseFloat(a.price.slice(1,a.price.length - 1)) - parseFloat(b.price.slice(1,b.price.length - 1)))});
-      }
-      else {
-        return array.sort((a,b) => {return (parseFloat(a.price.slice(1,a.price.length - 1)) - parseFloat(b.price.slice(1,b.price.length - 1)))}).reverse();
+      return array
+      // if(option === "Low To High")
+      // {
+      //   return array.sort((a,b) => {return (parseFloat(a.price.slice(1,a.price.length - 1)) - parseFloat(b.price.slice(1,b.price.length - 1)))});
+      // }
+      // else {
+      //   return array.sort((a,b) => {return (parseFloat(a.price.slice(1,a.price.length - 1)) - parseFloat(b.price.slice(1,b.price.length - 1)))}).reverse();
       
-      }
+      // }
      };

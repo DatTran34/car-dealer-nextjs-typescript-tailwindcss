@@ -27,7 +27,7 @@ function ProductCard({ car }: { car: ICar }) {
         <Link
           href={{
             pathname: "/productPage",
-            query: { object: JSON.stringify(car) }, // the data
+            query: { id: car.id }, // the data
           }}
         >
           <div>See Detail</div>

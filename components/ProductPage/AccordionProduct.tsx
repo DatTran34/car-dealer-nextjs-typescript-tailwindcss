@@ -31,7 +31,7 @@ export default function AccordionProduct() {
   };
  
   return (
-    <div className="bg-white rounded-lg p-4">
+    <div className="bg-[#ffffff] rounded-lg p-4">
        <Fragment >
       <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
         <AccordionHeader onClick={() => handleOpen(1)}>
