@@ -2,7 +2,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { EditIcon, TrashIcon } from "../../components/Icon";
 import Navbar from "../../components/Navbar";
 import { ICar } from "../../components/Types/model";
@@ -12,16 +12,34 @@ import { Button } from "@material-tailwind/react";
 import FilterBox from "../../components/ProductPage/FilterBox";
 
 function list({ cars }: { cars: ICar[] }) {
-      if (!cars) {
-        return <ErrorPage statusCode={404} />;
-      }
+  if (!cars) {
+    return <ErrorPage statusCode={404} />;
+  }
   const titleList = [
     "model_make_display",
     "model_name",
     "model_year",
-    "model_mileage"
+    "model_mileage",
   ];
 
+  const [leftPoint, setLeftPoint] = useState(0)
+  const [rightPoint, setRightPoint] = useState(10)
+
+  const handlePrev = () => {
+    if(leftPoint !== 0)
+    {
+      setLeftPoint(leftPoint - 10)
+      setRightPoint(rightPoint - 10)
+    }
+  }
+
+  const handleNext = () => {
+    if(rightPoint !== cars.length - 1)
+    {
+      setLeftPoint(leftPoint + 10)
+      setRightPoint(rightPoint + 10)
+    }
+  }
 
   return (
     <div className="bg-[#F1F3F4]">
@@ -49,12 +67,22 @@ function list({ cars }: { cars: ICar[] }) {
                 {title}
               </div>
             ))} */}
-            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">Model Make Display</div>
-            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">Model Name</div>
-            <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">Model Year</div>
-            <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">Model Mileage</div>
-            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">Action</div>
-            {cars.slice(0, 10).map((car, idx) => {
+            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">
+              Model Make Display
+            </div>
+            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">
+              Model Name
+            </div>
+            <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">
+              Model Year
+            </div>
+            <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">
+              Model Mileage
+            </div>
+            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 bg-[#bbdefb]">
+              Action
+            </div>
+            {cars.slice(leftPoint, rightPoint).map((car, idx) => {
               return (
                 <>
                   {/* {titleList.map((titleList, idx) => (
@@ -62,10 +90,18 @@ function list({ cars }: { cars: ICar[] }) {
                       {car[titleList]}
                     </div>
                   ))} */}
-            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 ">{car["model_make_display"]}</div>
-            <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 ">{car["model_name"]}</div>
-            <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 ">{car["model_year"]}</div>
-            <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 ">{car["model_mileage"]}</div>
+                  <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 ">
+                    {car["model_make_display"]}
+                  </div>
+                  <div className="col-span-1 border-t-2 border-[#aaa] py-3 px-6 ">
+                    {car["model_name"]}
+                  </div>
+                  <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 ">
+                    {car["model_year"]}
+                  </div>
+                  <div className="col-span-1 hidden md:block border-t-2 border-[#aaa] py-3 px-6 ">
+                    {car["model_mileage"]}
+                  </div>
                   <div className="col-span-1 border-t-2 border-[#aaa] py-4 px-6 flex flex-row">
                     <div className="cursor-pointer">
                       <Link
@@ -85,9 +121,12 @@ function list({ cars }: { cars: ICar[] }) {
               );
             })}
           </div>
-          <div>
-            <div>Prev</div>
-            <div>Next</div>
+          <div className="px-4 flex flex-row justify-between">
+            <div className="text-xs sm:text-sm text-gray-600">Showing {leftPoint} to {rightPoint} of {cars.length} results</div>
+            <div className="space-x-2 sm:space-x-4">
+              <Button onClick={(e)=> {e.preventDefault(); handlePrev()}}>Prev</Button>
+              <Button onClick={(e)=> {e.preventDefault(); handleNext()}}>Next</Button>
+            </div>
           </div>
         </div>
       </main>

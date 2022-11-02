@@ -29,10 +29,10 @@ function InputForm({
         </Breadcrumbs>
       </div>
       <div className="bg-white rounded-lg p-4 space-y-6">
-        <div className="grid grid-cols-6 md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
           {Object.keys(car).sort().map((key, index) => {
             return (
-              <div key={index} className="col-span-3 md:col-span-2 space-y-4">
+              <div key={index} className="col-span-full md:col-span-2 ">
                 <div className="w-full">
                   <Input
                     label={key.replace(/_/g, " ").toUpperCase()}
