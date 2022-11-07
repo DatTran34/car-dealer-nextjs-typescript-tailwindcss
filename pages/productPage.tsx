@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Navbar from "../components/Navbar";
-import { ICar } from "../components/Types/model";
+import Navbar from "../components/Navbar/Navbar";
+import { IBrand, ICar } from "../components/Types/model";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import AccordionProduct from "../components/ProductPage/AccordionProduct";
@@ -15,81 +15,132 @@ import {
   query,
   getDoc,
   doc,
+  getDocs
 } from "@firebase/firestore";
+import { colors_name } from "../components/Types/data";
+import {motion} from "framer-motion"
 
-
-const ProductPage = ({ car }: { car: ICar }) => {
-  if (!car) {
+const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand[] , query_id : string }) => {
+  if (!cars && !brands && !query_id) {
     return <ErrorPage statusCode={404} />;
   }
-
+  const car : ICar = cars.filter((car) => {
+    if (car.id === query_id) {
+      console.log(car)
+      return car
+    }
+  })[0] as ICar
+  
+  function numberWithCommas(x : number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
   return (
-    <div className="bg-[#F1F3F4]">
+    <motion.div 
+    initial={{y:"100%"}}
+    animate={{y: "0%"}}
+    transition={{duration: 0.75, ease: "easeOut"}}
+    exit={{y:"100%"}}>
       <Head>
         <title>Car Dealer</title>
       </Head>
-      <Navbar />
+      <Navbar cars={cars} brands={brands} />
       <main className="max-w-screen-2xl mx-auto py-4">
         <div className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4">
-            <SwiperProduct car={car}/>
+            <SwiperProduct car={car} />
             <div className="bg-[#ffffff] rounded-md px-5 py-10 space-y-5 h-full">
-              <div className="text-3xl">
-                {" "}
-                {car.model_year} {car.model_make} {car.model_name}{" "}
-              </div>
-              <div className="flex flex-col items-start justify-start w-2/5 ">
-                <div className="flex flex-row space-x-4">
-                  <div className="text-2xl text-[#39C7A5]">$23,000</div>
-                  <div className="bg-[#EF4C41] text-base text-white py-1 px-2 rounded-md">
-                    SAVE $100
-                  </div>
+              <div className="flex flex-rows items-center justify-between text-3xl">
+                <div className="text-[#39C7A5]">
+                  {car.model_make_id} {car.model_name}
                 </div>
-                <div className="text-base text-[#777C91]">Was $299</div>
+                <div className="text-3xl ">
+                  ${numberWithCommas(Number(car.model_price.toFixed(0)))}
+                </div>
               </div>
-              <div className="text-sm">
-                Description: Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua.
+              <div className="flex flex-rows items-center justify-between ">
+                <div>
+                  <div className="text-sm text-[#bdbdbd]">Year</div>
+                  <div>{car.model_year}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-[#bdbdbd]">Mileage</div>
+                  <div>{car.model_mileage}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-[#bdbdbd]">Body Type</div>
+                  <div>{car.model_body}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-[#bdbdbd]">Transmission</div>
+                  <div>{car.model_transmission_type}</div>
+                </div>
               </div>
-              <div className="grid grid-cols-2">
-                <div>Used</div>
-                <div>32,450 miles</div>
-                <div>Automatic</div>
-                <div>21 mpg</div>
-                <div>Gasoline</div>
-                <div>Gray</div>
+              <div>
+                <div className="flex flex-cols items-center justify-between ">
+                  <div className="text-sm text-[#bdbdbd]">VIN number</div>
+                  <div>{car.model_vin}</div>
+                </div>
+                <div className="flex flex-cols items-center justify-between ">
+                  <div className="text-sm text-[#bdbdbd]">Drive Wheels</div>
+                  <div>{car.model_drive}</div>
+                </div>
+                <div className="flex flex-cols items-center justify-between ">
+                  <div className="text-sm text-[#bdbdbd]">Exterior Color</div>
+                  <div>{colors_name[car.model_color]}</div>
+                </div>
               </div>
               <Button variant="gradient" color="blue">
                 Contact Us
               </Button>
             </div>
           </div>
-          <AccordionProduct />
+          <AccordionProduct car={car} />
         </div>
       </main>
-    </div>
+    </motion.div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id: string = context.query.id as string;
-  const carsCollection = doc(db, "car-list", id);
+  const query_id: string = context.query.id as string;
+  // const carsCollection = doc(db, "car-list", id);
 
-  try {
-    const docSnap = await getDoc(carsCollection);
-    if (docSnap.exists()) {
-      return {
-        props: { car: docSnap.data()},
-      };
-    } else {
-      console.log("Document does not exist");
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   const docSnap = await getDoc(carsCollection);
+  //   if (docSnap.exists()) {
+  //     return {
+  //       props: { car: docSnap.data()},
+  //     };
+  //   } else {
+  //     console.log("Document does not exist");
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  const carsCollection = collection(db ,'car-list');
+
+  let cars: ICar[] = await getDocs(carsCollection)
+  .then((data) => {
+    return data.docs.map((car) => {
+          let car_ : ICar = car.data() as ICar
+          return {...car_, id : car.id}
+      });
+  })
+
+
+  const brandsCollection = collection(db, 'brand-list');
+  let brands: IBrand[] = await getDocs(brandsCollection)
+    .then((data) => {
+      return data.docs.map((brand) => {
+        let brand_: IBrand = brand.data() as IBrand
+        return { ...brand_, id: brand.id }
+      });
+    })
+
+
   return {
-    props: { },
+    props: {cars, brands, query_id},
   };
 };
 export default ProductPage;

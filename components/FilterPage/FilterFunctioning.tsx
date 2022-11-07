@@ -3,27 +3,27 @@ import { db } from "../../config/firebase";
 
 import { collection, QueryDocumentSnapshot, DocumentData, query, where, limit, getDocs } from "@firebase/firestore";
 // Make the list of brand options to filter
-export const initializeBrandList = async (data: ICar[]) => {
-  const brandsCollection = collection(db, 'brand-list');
-  let brands: IBrand[] = await getDocs(brandsCollection)
-    .then((data) => {
-      return data.docs.map((brand) => {
-        let brand_: IBrand = brand.data() as IBrand
-        return { ...brand_, id: brand.id }
-      });
-    })
-  return brands 
-};
+// export const initializeBrandList = async (data: ICar[]) => {
+//   const brandsCollection = collection(db, 'brand-list');
+//   let brands: IBrand[] = await getDocs(brandsCollection)
+//     .then((data) => {
+//       return data.docs.map((brand) => {
+//         let brand_: IBrand = brand.data() as IBrand
+//         return { ...brand_, id: brand.id }
+//       });
+//     })
+//   return brands 
+// };
 
-export const initializeModelList = (data: ICar[]) => {
-  return Array.from(
-    new Set(
-      data.map((car, idx) => {
-        return car.model_name;
-      })
-    )
-  );
-}
+// export const initializeModelList = (data: ICar[]) => {
+//   return Array.from(
+//     new Set(
+//       data.map((car, idx) => {
+//         return car.model_name;
+//       })
+//     )
+//   );
+// }
 
 // Handle filter function
 export const filterSelectedBarndOptions = (array: ICar[], option: string) => {

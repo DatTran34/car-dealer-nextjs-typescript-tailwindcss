@@ -1,41 +1,67 @@
 import React from "react";
 import { ICar } from "../Types/model";
 import Image from "next/image";
-import { TagIcon } from "../Icon";
+import { SearchIcon, Stack, TagIcon } from "../Icon";
 import Link from "next/link";
+import { colors, colors_name } from "../Types/data";
 function ProductCard({ car }: { car: ICar }) {
-
-  const colors = ["pspc0004","pspc0041","pspc0096"]
-
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   return (
-    <div className="relative b flex flex-col z-30 space-y-2">
-      <div className="bg-light-blue p-2 rounded-lg">
+    <div className="bg-white hover:drop-shadow-lg drop-shadow-md rounded-sm m-2">
+      <div className="relative bg-[#becae3] p-2 ">
         <img
           className="object-contain"
-          src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${car.model_make}&modelFamily=${car.model_name}&paintId=pspc0014&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
+          src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${
+            car.model_make_id
+          }&modelFamily=${car.model_name}&paintId=${
+            colors[car.model_color]
+          }&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
           alt="car"
+          loading="lazy"
         />
-      </div>
-      <div className="text-xl">
-        {car.model_make_id} {car.model_name}
-      </div>
-      <div className="flex flex-rows justify-between items-between text-sm text-gray-400 ">
-        <div>
-        {`${car.model_mileage} miles`}
+        <div className="absolute bottom-0 left-0 bg-[#359bef] text-[#fff] px-5">
+          ${numberWithCommas(Number(car.model_price.toFixed(0)))}
         </div>
-        <div>
-        {car.model_color}
+        <div className="absolute -bottom-5 right-5 bg-[#fff] text-[#359bef] p-2 rounded-full hover:bg-[#359bef] hover:text-white">
+          <Link
+            href={{
+              pathname: "/productPage",
+              query: { id: car.id }, // the data
+            }}
+          >
+            <Stack />
+          </Link>
         </div>
-        <div>
-        {car.model_year}
+      </div>
+      <div className="">
+        <div className="grid grid-cols-3 px-5 py-4 gap-x-5">
+          <div>
+            <div className="text-base">{car.model_make_id}</div>
+            <div className="text-xs text-[#8c8c8c]">{car.model_name}</div>
+          </div>
+          <div className="grid col-span-2 grid-cols-2 text-[#8c8c8c]">
+            <div>
+              <div className="text-xs">Year</div>
+              <div className="text-sm">{car.model_year}</div>
+            </div>
+            <div>
+              <div className="text-xs">Mileage</div>
+              <div className="text-sm">{`${car.model_mileage} miles`}</div>
+            </div>
+            <div>
+              <div className="text-xs">Year</div>
+              <div className="text-sm">{car.model_year}</div>
+            </div>
+            <div>
+              <div className="text-xs">Mileage</div>
+              <div className="text-sm">{car.model_mileage}</div>
+            </div>
+          </div>
         </div>
-
       </div>
-      <div className="flex flex-row space-x-2 items-center">
-        <TagIcon />
-        <p className="text-base text-light-green">$20,555</p>
-      </div>
-      <div className="bg-light-green p-2 text-white cursor-pointer">
+      {/* <div className="bg-light-green p-2 text-white cursor-pointer">
         <Link
           href={{
             pathname: "/productPage",
@@ -44,7 +70,7 @@ function ProductCard({ car }: { car: ICar }) {
         >
           <div>See Detail</div>
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

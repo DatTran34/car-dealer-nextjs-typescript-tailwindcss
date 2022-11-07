@@ -28,6 +28,25 @@ a {
   body {
     color: black;
     font-weight: 700;
-    background: #F1F3F4;
+    background: #f2f3f5;
   }
+}
+.slide-in {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: #066bb8;
+  transform-origin: left;
+}
+
+.slide-out {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: #066bb8;
+  transform-origin: right;
 }

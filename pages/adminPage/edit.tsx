@@ -1,28 +1,34 @@
 import {
     Breadcrumbs,
 } from "@material-tailwind/react";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import React, { useState } from "react";
-import Navbar from "../../components/Navbar";
-import { ICar } from "../../components/Types/model";
+import React, { useEffect, useState } from "react";
+import Navbar from "../../components/Navbar/Navbar";
+import { IBrand, ICar } from "../../components/Types/model";
 import { db } from "../../config/firebase";
 import ErrorPage from "next/error";
 import InputForm from "../../components/AdminPage/InputForm";
 import { useRouter } from 'next/router'
 
-function edit({ car }: { car: ICar }) {
-  if (!car) {
+function edit({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand[] , query_id : string }) {
+  if (!cars && !brands && !query_id) {
     return <ErrorPage statusCode={404} />;
   }
+  const car : ICar = cars.filter((car) => {
+    if (car.id === query_id) {
+      return car
+    }
+  })[0] as ICar
+
   const [updatedCar, setUpdatedCar] = useState<ICar>(car);
   const [error, setError] = useState<string>(""); // error
   const [message, setMessage] = useState<string>(""); // message
   const router = useRouter()
   const handleOnChange = (key: string, value: string) => {
-    const car_ = { ...car, [key]: value };
-    setUpdatedCar({ ...updatedCar, ...car_ });
+    //const car_ = { ...car, [key]: value };
+    setUpdatedCar({ ...updatedCar, [key]: value });
   };
 
   const editCar = async () => {
@@ -31,7 +37,7 @@ function edit({ car }: { car: ICar }) {
       ...updatedCar,
     };
     try {
-        const carsCollection = doc(db, "car-list", car.id);
+        const carsCollection = doc(db, "car-list", query_id);
         updateDoc(carsCollection, carData)
           .then((docRef) => {
             console.log(
@@ -54,7 +60,7 @@ function edit({ car }: { car: ICar }) {
       <Head>
         <title>Car Dealer</title>
       </Head>
-      <Navbar />
+      <Navbar cars={cars} brands={brands} />
       <main className="max-w-screen-2xl mx-auto p-4">
         <InputForm car={updatedCar} handleOnChangeCar={handleOnChange} submit={editCar} title="EDIT CAR"/>
       </main>
@@ -63,23 +69,46 @@ function edit({ car }: { car: ICar }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id: string = context.query.id as string;
-  const carsCollection = doc(db, "car-list", id);
+  const query_id: string = context.query.id as string;
+  // const carsCollection = doc(db, "car-list", id);
 
-  try {
-    const docSnap = await getDoc(carsCollection);
-    if (docSnap.exists()) {
-      return {
-        props: { car: {...docSnap.data(), id: id} },
-      };
-    } else {
-      console.log("Document does not exist");
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   const docSnap = await getDoc(carsCollection);
+  //   if (docSnap.exists()) {
+  //     return {
+  //       props: { car: {...docSnap.data(), id: id} },
+  //     };
+  //   } else {
+  //     console.log("Document does not exist");
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+
+  const carsCollection = collection(db ,'car-list');
+
+  let cars: ICar[] = await getDocs(carsCollection)
+  .then((data) => {
+    return data.docs.map((car) => {
+          let car_ : ICar = car.data() as ICar
+          return {...car_, id : car.id}
+      });
+  })
+
+
+  const brandsCollection = collection(db, 'brand-list');
+  let brands: IBrand[] = await getDocs(brandsCollection)
+    .then((data) => {
+      return data.docs.map((brand) => {
+        let brand_: IBrand = brand.data() as IBrand
+        return { ...brand_, id: brand.id }
+      });
+    })
+
+
   return {
-    props: {},
+    props: {cars, brands, query_id},
   };
 };
 

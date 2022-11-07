@@ -1,12 +1,11 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import FilterBox from "../components/ProductPage/FilterBox";
 import type { GetServerSideProps } from "next";
 import { IBrand, ICar } from "../components/Types/model";
 import ProductCard from "../components/HomePage/ProductCard";
 import {
-  initializeBrandList,
   filterSelectedModelOptions,
   filterSelectedBarndOptions,
   filterSelectedSortByOptions,
@@ -14,17 +13,19 @@ import {
 
 import { db } from "../config/firebase";
 
-import {collection,QueryDocumentSnapshot,DocumentData,query,where,limit,getDocs} from "@firebase/firestore";
+import {collection,getDocs} from "@firebase/firestore";
+import ErrorPage from "next/error";
 
 
-
-function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
-
+function filterPage({cars, brands, query_brand} : {cars: ICar[], brands: IBrand[], query_brand:string}) {
+  if (!cars && !brands) {
+    return <ErrorPage statusCode={404} />;
+  }
   const [loading,setLoading] = useState<boolean>(false);
 
   // Selected Options
   const [selectedModelOption, setSelectedModelOption] = useState<string>("");
-  const [selectedBrandOption, setSelectedBrandOption] = useState<string>("");
+  const [selectedBrandOption, setSelectedBrandOption] = useState<string>(query_brand);
   const [selectedSortByOption, setSelectedSortByOption] = useState<string>("");
 
   // A List of Cars after filtering
@@ -45,11 +46,7 @@ function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
       //setModelList(models_);
       setSelectedSortByOption("");
       setSelectedModelOption("");
-      console.log("1")
-      console.log(selectedBrandOption)
-      console.log(selectedModelOption)
       setFilteredCars(result);
-      
     }
   }, [selectedBrandOption])
 
@@ -58,10 +55,6 @@ function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
     if (selectedModelOption !== "") {
       result = filterSelectedModelOptions(result, selectedModelOption);
       setFilteredCars(result);
-      
-      console.log("2")
-      console.log(selectedBrandOption)
-      console.log(selectedModelOption)
     }
 
   }, [selectedModelOption])
@@ -69,7 +62,6 @@ function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
 
   const initializeModelList = () => {
      const brand = brands.filter((brand) => brand.brandName === selectedBrandOption)[0]
-
      if(brand)
      {
        return brand.modelList
@@ -82,7 +74,7 @@ function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
       <Head>
         <title>Car Dealer</title>
       </Head>
-      <Navbar />
+      <Navbar cars={cars} brands={brands} />
       <main className="max-w-screen-2xl mx-auto py-4">
         {loading ? (
         <div className="text-center">
@@ -96,25 +88,28 @@ function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
     </div>
         ): (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg p-4 grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4">
               <FilterBox
-                title="Category"
+                title="Brands"
                 optionList={brands.map((brand,idx) => {return brand.brandName})}
+                selectedFilter= {selectedBrandOption}
                 setFilter={setSelectedBrandOption}
               />
               <FilterBox
                 title="Model"
                 //optionList={brands[selectedBrandOption]}
                 optionList={initializeModelList()}
+                selectedFilter= {selectedModelOption}
                 setFilter={setSelectedModelOption}
               />
               <FilterBox
                 title="Sort By"
                 optionList={sortByList}
+                selectedFilter={selectedSortByOption}
                 setFilter={setSelectedSortByOption}
               />
             </div>
-            <div className="bg-white rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredCars?.map((car, idx) => (
                 <ProductCard car={car} key={idx} />
               ))}
@@ -128,6 +123,19 @@ function filterPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+
+  var query_brand: string = ""
+  
+  if(context.query.brand)
+  {
+    query_brand = context.query.brand as string;
+  } 
+  var query_model: string = ""
+  
+  if(context.query.model)
+  {
+    query_model = context.query.model as string;
+  } 
 
   const carsCollection = collection(db ,'car-list');
 
@@ -150,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
 
   return {
-    props: {cars, brands}
+    props: {cars, brands, query_brand}
   }
 }
 
