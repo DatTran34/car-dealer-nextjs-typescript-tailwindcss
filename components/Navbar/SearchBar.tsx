@@ -1,11 +1,20 @@
+import Link from 'next/link'
 import React, { useState } from 'react'
 import { SearchIcon, XCircleIcon } from '../Icon'
+import { colors } from '../Types/data'
+import { ICar } from '../Types/model'
 
-function SearchBar() {
+function SearchBar({ cars }: { cars: ICar[] }) {
 
     const [searchText, setSearchText] = useState<string>("")
     const [isOpenSearchContainer, setIsOpenSearchContainer] = useState<boolean>(false)
+    const [searchedResult, setSearchedResult] = useState<ICar[]>([])
     const handleOnChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const results = cars.filter(car => {
+            const searchData : string = car.model_make_id + " " + car.model_name + " " + car.model_year
+            return searchData.toLowerCase().includes(e.target.value.toLowerCase()) 
+        })
+        setSearchedResult(results)
         setSearchText(e.target.value)
     }
 
@@ -17,11 +26,11 @@ function SearchBar() {
         <div className='flex-grow z-[15]'>
             <div className='relative'>
                 <div className='flex items-center space-x-2 p-2 text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition duration-300 focus:outline-none bg-white hover:border-gray-400 focus:ring-2 focus:ring-blue-500'>
-                    <div><SearchIcon/></div>
+                    <div><SearchIcon /></div>
                     <div className=' w-full'>
                         <input
-                            onFocus={()=>{setIsOpenSearchContainer(true)}}
-                            onBlur={()=>{setIsOpenSearchContainer(false)}}
+                            onFocus={() => { setIsOpenSearchContainer(true) }}
+                            onBlur={() => { setIsOpenSearchContainer(false) }}
                             onChange={handleOnChangeSearchText}
                             type="text"
                             value={searchText}
@@ -38,19 +47,35 @@ function SearchBar() {
                         <div className='absolute z-[15] w-full bg-white shadow-lg border rounded py-2 mt-1.5 text-sm text-gray-700'>
                             <div className='max-h-72 overflow-y-auto overflow-y-scroll'>
                                 <div className='px-2.5'>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                    <div className='block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500'>Cadillac</div>
-                                </div>
+                                    {
+                                        searchText === "" ? <div className='text-gray-500'>No posts match the query</div>
+                                            : searchedResult.length === 0 ? <div className='text-gray-500'>No items matched with your seaching</div> :
+                                                <div>{
+                                                    searchedResult.map((car, idx) =>
+                                                        <Link
+                                                            href={{
+                                                                pathname: "/productPage",
+                                                                query: { id: car.id }, // the data
+                                                            }}
+                                                        >
+                                                            <div className='flex flex-row items-center space-x-2 p-2 cursor-pointer text-gray-500 hover:bg-blue-100 hover:text-blue-500' key={idx}>
+                                                                <img
+                                                                width={50}
+                                                                    className="object-contain"
+                                                                    src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${car.model_make_id
+                                                                        }&modelFamily=${car.model_name}&paintId=${colors[car.model_color]
+                                                                        }&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
+                                                                    alt="car"
+                                                                    loading="lazy"
+                                                                />
+                                                                <div>{car.model_year} {car.model_make_id} {car.model_name} - {car.model_mileage} mileages</div>
+                                                            </div>
+                                                        </Link>
+
+                                                    )
+                                                }</div>
+                                    }
+                                    </div>
                             </div>
                         </div>
                     )

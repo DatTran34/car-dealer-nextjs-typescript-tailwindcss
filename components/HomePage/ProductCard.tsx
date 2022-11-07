@@ -36,12 +36,12 @@ function ProductCard({ car }: { car: ICar }) {
         </div>
       </div>
       <div className="">
-        <div className="grid grid-cols-3 px-5 py-4 gap-x-5">
+        <div className="grid grid-cols-3 px-2 md:px-5 py-4 gap-x-5">
           <div>
             <div className="text-base">{car.model_make_id}</div>
             <div className="text-xs text-[#8c8c8c]">{car.model_name}</div>
           </div>
-          <div className="grid col-span-2 grid-cols-2 text-[#8c8c8c]">
+          <div className="grid col-span-2 grid-cols-2 text-[#8c8c8c] text-center">
             <div>
               <div className="text-xs">Year</div>
               <div className="text-sm">{car.model_year}</div>

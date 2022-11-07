@@ -28,7 +28,7 @@ function Navbar({ cars ,brands  }: { cars: ICar[], brands: IBrand[] }) {
           <Truck />
           <div className="hidden md:block">DT Auto</div>
         </Link>
-        <SearchBar />
+        <SearchBar cars={cars}/>
         <div className="block md:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
           <Bar3 />
         </div>

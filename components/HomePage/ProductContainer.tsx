@@ -14,7 +14,7 @@ import Link from "next/link";
 function ProductContainer({ cars, brand }: { cars: ICar[]; brand: string }) {
   const swiperRef = useRef<SwiperCore>();
   return (
-    <div className="relative p-10 rounded-lg space-y-2 bg-[#fff]">
+    <div className="relative py-4 px-8 lg:p-10 rounded-lg space-y-2 bg-[#fff]">
       <div>
         <div className="flex flex-row justify-between">
           <h4 className="text-lg">{brand}</h4>

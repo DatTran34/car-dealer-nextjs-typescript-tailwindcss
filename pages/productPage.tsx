@@ -26,7 +26,6 @@ const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand
   }
   const car : ICar = cars.filter((car) => {
     if (car.id === query_id) {
-      console.log(car)
       return car
     }
   })[0] as ICar
