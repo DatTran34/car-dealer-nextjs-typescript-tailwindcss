@@ -1,13 +1,11 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import FilterBox from "../components/ProductPage/FilterBox";
 import type { GetServerSideProps } from "next";
 import { ICar } from "../components/Types/model";
 import ProductCard from "../components/HomePage/ProductCard";
 import {
-  initializeModelList,
-  initializeBrandList,
   filterSelectedModelOptions,
   filterSelectedBarndOptions,
   filterSelectedSortByOptions,
@@ -28,7 +26,7 @@ function filterPage({ cars }: { cars: ICar[] }) {
   const sortByList = ["Low To High", "High To Low"]
 
   useEffect(() => {
-    setBrandList(initializeBrandList(cars));
+    //setBrandList(initializeBrandList(cars));
   }, [cars]);
 
 
@@ -38,7 +36,7 @@ function filterPage({ cars }: { cars: ICar[] }) {
       let result = cars;
       result = filterSelectedBarndOptions(result,selectedBrandOption);
       setFilteredCars(result);
-      setModelList(initializeModelList(result));
+      //setModelList(initializeModelList(result));
       setSelectedSortByOption("")
     }
   }, [selectedBrandOption]);
@@ -56,10 +54,8 @@ function filterPage({ cars }: { cars: ICar[] }) {
   useEffect(() => {
     //Filter model option updated so apply all filters here
     if (selectedSortByOption !== "") {
-        console.log("asd")
       let result = filteredCars;
       result = filterSelectedSortByOptions(result,selectedSortByOption);
-      console.log(result)
       setFilteredCars(result);
     }
   }, [selectedSortByOption]);
@@ -69,7 +65,7 @@ console.log(selectedSortByOption)
       <Head>
         <title>Car Dealer</title>
       </Head>
-      <Navbar />
+      <Navbar cars={cars} brands={brands} />
       <main className="max-w-screen-2xl mx-auto py-4">
         <div className="space-y-4">
           <div className="bg-white rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

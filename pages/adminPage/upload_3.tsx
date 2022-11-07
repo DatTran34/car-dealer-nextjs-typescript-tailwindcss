@@ -8,9 +8,8 @@ import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore"
 import { db } from "../../config/firebase"; // firestore instance
 import InputForm from "../../components/AdminPage/InputForm";
 import { useRouter } from 'next/router'
-import { colors_name } from "../../components/Types/data";
 var vinGenerator = require("vin-generator");
-function adminPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
+function adminPage({cars} : {cars: ICar[]}) {
 
   if (!cars) {
     return <ErrorPage statusCode={404} />;
@@ -19,8 +18,6 @@ function adminPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
   const [message, setMessage] = useState<string>(""); // message
   const router = useRouter()
   const [newCar, setNewCar] = useState<ICar>(cars[0]); // title
-
-
 
   const handleOnChangeNewCar = (key: string, value: string) => {
     const car_ = { ...newCar, [key]: value };
@@ -34,7 +31,7 @@ function adminPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
   //   console.log("added successfully");
   // };
 
-  const addBrandToFirebase = async () => {
+  const addBrandToFirebase = async (brands: IBrand[])  => {
     const filteredBrand : IBrand = brands.filter(brand => brand.brandName === newCar.model_make_id)[0]
     if (filteredBrand) {
       if (filteredBrand.modelList.filter(model => model === newCar.model_name).length == 0) {
@@ -60,46 +57,54 @@ function adminPage({cars, brands} : {cars: ICar[], brands: IBrand[]}) {
       }
     }
     else {
-      const newBrand = {
+      const newBrand : IBrand = {
         brandName: newCar.model_make_id,
         modelList: Array(1).fill(newCar.model_name),
+        id : ""
       }
       try {
         //add the Document
 
         console.log("start-to-add-brand");
-        await addDoc(collection(db, "brand-list"), newBrand);
+        await addDoc(collection(db, "brand-list"), newBrand).then(function(docRef) {
+          console.log("Document Brand written with ID: ", docRef.id);
+          newBrand.id = docRef.id;
+          brands.push(newBrand)
+      })
+      .catch(function(error) {
+          console.error("Error adding document: ", error);
+      });
         //show a success message
         setMessage("New brand added successfully");
         console.log("New brand added successfully");
-
+        
       } catch (error) {
         //show an error message
         setError("An error occurred while adding new brand");
         console.log(error);
       }
     }
+    return brands;
   }
 
   const submit = async () => {
-    await addCar(newCar)
-    // cars.map(async (car_, idx) => {
-    //   await addCar(car_);
-    // });
+    const brands : IBrand[] = [];
+    cars.map(async (car_,idx)=>{
+        await addCar(car_,brands);
+    })
     console.log("added successfully");
 }
 
-  const addCar = async (newCar_ : ICar) => {
+  const addCar = async (newCar_ : ICar, brands : IBrand[]
+    ) => {
     // get the current timestamp
     console.log("start-to-add");
     // structure the car data
     const carData = {
       ...newCar_,
     };
-    if(brands)
-    {
-      await addBrandToFirebase()
-    }
+    await addBrandToFirebase(brands)
+    console.log("brand" , brands)
     try {
       //add the Document
       console.log("start-to-add-2");
@@ -137,10 +142,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   });
   // });
 
-  const keyword_make = "Toyota";
-  const keyword_model = "Camry";
   const res = await fetch(
-    `https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&keyword=${keyword_make}&keyword=${keyword_model}`
+    "https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims"
   )
     .then((response) => response.text())
     .then((response) => {
@@ -151,12 +154,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //const data:string = res!
   const bigData: ICar[] = await JSON.parse(res!.slice(11, res!.length - 3));
   var cars = [...bigData].sort(() => 0.5 - Math.random()).slice(0, 100);
+  // console.log(data)
+  //const cars: any = "23"//await JSON.parse(data);
 
   cars = cars.map((car, index) => {
     var randomVin = vinGenerator.generateVin();
     var mileage =
       (2023 - car.model_year) * Math.floor(1000 + Math.random() * 9000);
-
+    var color = ["Black", "Silver", "White", "Gray", "Brown"];
     //Math.floor(Math.random() * (max - min + 1)) + min
     car.model_engine_power_rpm = Math.floor(Math.random() * (5700 - 5500 + 1)) + 5500;
     car.model_engine_torque_rpm = Math.floor(Math.random() * (4300 - 4100 + 1)) + 4100;
@@ -172,13 +177,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     car.model_wheelbase_mm = Math.floor(Math.random() * (2600 - 2200 + 1)) + 2200;
     car.model_co2 = Math.floor(Math.random() * (150 - 90 + 1)) + 90;
     car.model_price = 100000 - mileage / (2023 - car.model_year) 
-    car.model_make_id = car.model_make_id.charAt(0).toUpperCase() + car.model_make_id.slice(1)
     return {
       ...car,
-      
       model_vin: randomVin,
       model_mileage: mileage,
-      model_color: Math.floor(Math.random() * colors_name.length),
+      model_color: color[Math.floor(Math.random() * color.length)],
       
     };
   });

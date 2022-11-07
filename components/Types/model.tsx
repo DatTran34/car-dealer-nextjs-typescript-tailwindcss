@@ -4,10 +4,10 @@ export interface ICar {
     // car_model: string,
     // car_color: string,
     // car_model_year: number,
-    model_vin?: string,
-    model_color?: string,
-    model_mileage?: number,
-    // price: string,
+    model_vin: string,
+    model_color: number,
+    model_mileage: number,
+    model_price: number,
     // availability: boolean
     model_id: number,
     model_make_id: string,
@@ -45,8 +45,13 @@ export interface ICar {
     model_fuel_cap_l: number,
     model_sold_in_us: number,
     model_co2:number,
-    model_make_display: string,
-    make_display: string,
     make_country: string,
     [key: string]: string | number | undefined; 
+}
+
+export interface IBrand {
+    id: string,
+    brandName: string,
+    modelList : string[],
+    [key: string]: string | string[] | undefined; 
 }
