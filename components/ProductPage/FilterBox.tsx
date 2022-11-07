@@ -36,8 +36,8 @@ function FilterBox({title, optionList, selectedFilter, setFilter} : {title: stri
 
   }
   return (
-      <div className={`w-full ${(title === "Category") &&  "z-[12]"} ${(title === "Model") &&  "z-[11]"} ${(title === "Sort By") &&  "z-10"}`}>
-        <Select isSearchable={true} placeholder={title} isMultiple={false} searchInputPlaceholder={"seaching"} value={selectedOption} onChange={handleChange} options={options} />
+      <div className={`w-full ${(title === "Brands") &&  "z-[12]"} ${(title === "Model") &&  "z-[11]"} ${(title === "Sort By") &&  "z-10"}`}>
+        <Select isSearchable={true} placeholder={title} isMultiple={false} searchInputPlaceholder={`Searching`} value={selectedOption} onChange={handleChange} options={options} />
         {/* <Select
           label={`${title}`}
           onChange={(evt: ReactNode) => {

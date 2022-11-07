@@ -9,7 +9,7 @@ function ProductCard({ car }: { car: ICar }) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   return (
-    <div className="bg-white drop-shadow-md rounded-sm m-2">
+    <div className="bg-white hover:drop-shadow-lg drop-shadow-md rounded-sm m-2">
       <div className="relative bg-[#becae3] p-2 ">
         <img
           className="object-contain"
@@ -21,10 +21,10 @@ function ProductCard({ car }: { car: ICar }) {
           alt="car"
           loading="lazy"
         />
-        <div className="absolute bottom-0 left-0 bg-[#164aff] text-[#fff] px-5">
+        <div className="absolute bottom-0 left-0 bg-[#359bef] text-[#fff] px-5">
           ${numberWithCommas(Number(car.model_price.toFixed(0)))}
         </div>
-        <div className="absolute -bottom-5 right-5 bg-[#fff] text-[#111] p-2 rounded-full">
+        <div className="absolute -bottom-5 right-5 bg-[#fff] text-[#359bef] p-2 rounded-full hover:bg-[#359bef] hover:text-white">
           <Link
             href={{
               pathname: "/productPage",

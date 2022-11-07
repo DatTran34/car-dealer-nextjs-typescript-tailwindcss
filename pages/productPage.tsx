@@ -18,7 +18,7 @@ import {
   getDocs
 } from "@firebase/firestore";
 import { colors_name } from "../components/Types/data";
-
+import {motion} from "framer-motion"
 
 const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand[] , query_id : string }) => {
   if (!cars && !brands && !query_id) {
@@ -34,7 +34,11 @@ const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
   return (
-    <div className="bg-[#F1F3F4]">
+    <motion.div 
+    initial={{y:"100%"}}
+    animate={{y: "0%"}}
+    transition={{duration: 0.75, ease: "easeOut"}}
+    exit={{y:"100%"}}>
       <Head>
         <title>Car Dealer</title>
       </Head>
@@ -92,7 +96,7 @@ const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand
           <AccordionProduct car={car} />
         </div>
       </main>
-    </div>
+    </motion.div>
   );
 };
 

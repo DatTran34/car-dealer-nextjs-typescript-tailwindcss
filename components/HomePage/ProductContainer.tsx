@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import ProductCard from "./ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ICar } from "../Types/model";
@@ -10,11 +10,12 @@ import SwiperCore, { Pagination } from "swiper";
 import { Navigation } from "swiper";
 import { ArrowLeft, ArrowRight } from "../Icon";
 import Link from "next/link";
-
+import { motion, AnimatePresence } from "framer-motion"
 function ProductContainer({ cars, brand }: { cars: ICar[]; brand: string }) {
   const swiperRef = useRef<SwiperCore>();
+  const [selectedId, setSelectedId] = useState(null)
   return (
-    <div className="relative py-4 px-8 lg:p-10 rounded-lg space-y-2 bg-[#fff]">
+    <div className="relative px-10 py-10 rounded-lg space-y-2">
       <div>
         <div className="flex flex-row justify-between">
           <h4 className="text-lg">{brand}</h4>
@@ -32,13 +33,13 @@ function ProductContainer({ cars, brand }: { cars: ICar[]; brand: string }) {
       </div>
       <div className="relative">
         <button
-          className="absolute inset-y-1/2 -left-5 z-4"
+          className="absolute inset-y-1/2 -left-7 z-4"
           onClick={() => swiperRef.current?.slidePrev()}
         >
           <ArrowLeft />
         </button>
         <button
-          className="absolute inset-y-1/2 -right-5 z-4"
+          className="absolute inset-y-1/2 -right-7 z-4"
           onClick={() => swiperRef.current?.slideNext()}
         >
           <ArrowRight />
@@ -79,9 +80,11 @@ function ProductContainer({ cars, brand }: { cars: ICar[]; brand: string }) {
           {cars.map((car, i) => {
             if (car.model_make_id === brand) {
               return (
-                <SwiperSlide key={i}>
-                  <ProductCard car={car} />
-                </SwiperSlide>
+                <motion.div>
+                  <SwiperSlide key={i}>
+                    <ProductCard car={car} />
+                  </SwiperSlide>
+                </motion.div>
               );
             }
           })}

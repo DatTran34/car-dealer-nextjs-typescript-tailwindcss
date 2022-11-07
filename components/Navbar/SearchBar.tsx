@@ -25,8 +25,9 @@ function SearchBar({ cars }: { cars: ICar[] }) {
     return (
         <div className='flex-grow z-[15]'>
             <div className='relative'>
-                <div className='flex items-center space-x-2 p-2 text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition duration-300 focus:outline-none bg-white hover:border-gray-400 focus:ring-2 focus:ring-blue-500'>
-                    <div><SearchIcon /></div>
+                <div className='text-gray-500 bg-[#fdfdfd] border-2 border-gray-200 rounded-lg flex items-center py-1 px-2
+                text-sm text-gray-500 transition duration-300 focus:outline-none hover:border-[#6882c2] focus:ring-3 focus:ring-blue-500'>
+                    <div><SearchIcon/></div>
                     <div className=' w-full'>
                         <input
                             onFocus={() => { setIsOpenSearchContainer(true) }}
@@ -34,17 +35,17 @@ function SearchBar({ cars }: { cars: ICar[] }) {
                             onChange={handleOnChangeSearchText}
                             type="text"
                             value={searchText}
-                            placeholder="Search ..."
-                            className="w-full py-2 px-4 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none"
+                            placeholder="Search cars, brands, models"
+                            className="w-full py-2 px-2 text-sm focus:border-gray-200 focus:ring-0 focus:outline-none bg-transparent"
                         />
                     </div>
                     <div className='' onClick={deleteTextOnSearchBar}>
-                        <XCircleIcon />
+                        <XCircleIcon/>
                     </div>
                 </div>
                 {
                     isOpenSearchContainer && (
-                        <div className='absolute z-[15] w-full bg-white shadow-lg border rounded py-2 mt-1.5 text-sm text-gray-700'>
+                        <div className='absolute z-[15] w-full bg-white shadow-lg border mt-1.5 text-sm text-gray-700 rounded-lg'>
                             <div className='max-h-72 overflow-y-auto overflow-y-scroll'>
                                 <div className='px-2.5'>
                                     {

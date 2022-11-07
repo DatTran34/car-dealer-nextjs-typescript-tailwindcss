@@ -13,6 +13,9 @@ import Drawer from "./Drawer";
 import AccorditionNavbar from "./AccorditionNavbar";
 import { IBrand, ICar } from "../Types/model";
 import SearchBar from "./SearchBar";
+import logo from '../../DTMOTORS_logo.png'
+import Image from "next/image";
+import { motion } from "framer-motion"
 function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
   const { data: session } = useSession();
 
@@ -24,15 +27,45 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
   return (
     <div className=" bg-white">
       <div className="max-w-7xl text-sm mx-auto py-4 flex flex-row items-center justify-between space-x-2 md:space-x-6 p-4">
-        <Link href="/" className="flex items-center space-x-2 cursor-pointer">
-          <Truck />
-          <div className="hidden lg:block">DT Auto</div>
+        <Link href="/" >
+          <motion.div
+            initial={{
+              x: -500,
+              opacity: 0,
+              scale: 0.5,
+            }}
+            animate={{
+              x: 0,
+              opacity: 1,
+              scale: 1,
+            }}
+            transition={{
+              duration: 1.5
+            }}
+            className="flex items-center space-x-2 cursor-pointer">
+            <Image src={logo} alt="logo" width={70} height={70} />
+            <div className="hidden md:block">DT Motors</div>
+          </motion.div>
         </Link>
         <SearchBar cars={cars} />
-        <div className="block lg:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
+        <div className="block md:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
           <Bar3 />
         </div>
-        <div className="hidden lg:inline-flex flex flex-row items-center space-x-4">
+        <motion.div
+          initial={{
+            x: 500,
+            opacity: 0,
+            scale: 0.5,
+          }}
+          animate={{
+            x: 0,
+            opacity: 1,
+            scale: 1,
+          }}
+          transition={{
+            duration: 1.5
+          }}
+          className="hidden md:inline-flex flex flex-row items-center space-x-4">
           <div>Contact Us</div>
           <Menu>
             <MenuHandler>
@@ -68,7 +101,7 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
                 )}</MenuItem>
             </MenuList>
           </Menu>
-        </div>
+        </motion.div>
       </div>
       <Drawer isOpen={isOpenDrawer} setIsOpen={setIsOpenDrawer}>
         <div className="grid grid-cols-1 px-6 justify-center items-center space-y-4">

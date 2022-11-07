@@ -8,7 +8,7 @@ import ErrorPage from "next/error";
 import { db } from '../config/firebase';
 import {collection,QueryDocumentSnapshot,DocumentData,query,where,limit,getDocs} from "@firebase/firestore";
 import { useState, useEffect } from 'react';
-
+import {motion} from "framer-motion"
 const carCollection = collection(db,'carlist');
 
 const Home: NextPage<{cars: ICar[] , brands: IBrand[]}> = props => {
@@ -20,7 +20,12 @@ const Home: NextPage<{cars: ICar[] , brands: IBrand[]}> = props => {
   const [loading,setLoading] = useState<boolean>(false);
 
   return (
-    <div className="bg-[#F1F3F4]">
+    <motion.div 
+      initial={{y:"100%"}}
+      animate={{y: "0%"}}
+      transition={{duration: 0.75, ease: "easeOut"}}
+      exit={{y:"100%"}}
+      className="bg-[#F1F3F4]">
       <Head>
         <title>Car Dealer</title>
       </Head>
@@ -34,7 +39,7 @@ const Home: NextPage<{cars: ICar[] , brands: IBrand[]}> = props => {
           <HomePage cars={cars} />
         )}
       </main>
-    </div>
+    </motion.div>
   );
 }
 
