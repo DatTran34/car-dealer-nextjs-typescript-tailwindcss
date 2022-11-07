@@ -13,7 +13,7 @@ import Drawer from "./Drawer";
 import AccorditionNavbar from "./AccorditionNavbar";
 import { IBrand, ICar } from "../Types/model";
 import SearchBar from "./SearchBar";
-function Navbar({ cars ,brands  }: { cars: ICar[], brands: IBrand[] }) {
+function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
   const { data: session } = useSession();
 
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
@@ -26,15 +26,24 @@ function Navbar({ cars ,brands  }: { cars: ICar[], brands: IBrand[] }) {
       <div className="max-w-7xl text-sm mx-auto py-4 flex flex-row items-center justify-between space-x-2 md:space-x-6 p-4">
         <Link href="/" className="flex items-center space-x-2 cursor-pointer">
           <Truck />
-          <div className="hidden md:block">DT Auto</div>
+          <div className="hidden lg:block">DT Auto</div>
         </Link>
-        <SearchBar cars={cars}/>
-        <div className="block md:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
+        <SearchBar cars={cars} />
+        <div className="block lg:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
           <Bar3 />
         </div>
-        <div className="hidden md:inline-flex flex flex-row items-center space-x-4">
+        <div className="hidden lg:inline-flex flex flex-row items-center space-x-4">
           <div>Contact Us</div>
-          <div>Cars</div>
+          <Menu>
+            <MenuHandler>
+              <div className="cursor-pointer">Car Brands</div>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem>Menu Item 1</MenuItem>
+              <MenuItem>Menu Item 2</MenuItem>
+              <MenuItem>Menu Item 3</MenuItem>
+            </MenuList>
+          </Menu>
           <Menu
             animate={{
               mount: { y: 0 },
@@ -68,7 +77,7 @@ function Navbar({ cars ,brands  }: { cars: ICar[], brands: IBrand[] }) {
           ) : (
             <Button variant="gradient">Hi Customer</Button>
           )}
-          <AccorditionNavbar brands={brands}/>
+          <AccorditionNavbar brands={brands} />
           {session ? (
             <Button className="cursor-pointer" onClick={() => signOut()}>Sign Out</Button>
           ) : (
