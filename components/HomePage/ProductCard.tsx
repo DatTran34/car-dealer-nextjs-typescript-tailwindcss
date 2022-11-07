@@ -17,7 +17,7 @@ function ProductCard({ car }: { car: ICar }) {
         />
       </div>
       <div className="text-xl">
-        {car.model_make} {car.model_name}
+        {car.model_make_id} {car.model_name}
       </div>
       <div className="flex flex-rows justify-between items-between text-sm text-gray-400 ">
         <div>

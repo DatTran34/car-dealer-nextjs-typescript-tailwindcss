@@ -32,7 +32,7 @@ console.log()
           <SwiperSlide key={idx}>
             <img
               className="object-contain"
-              src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${car.model_make}&modelFamily=${car.model_name}&paintId=pspc0014&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
+              src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${car.model_make_id}&modelFamily=${car.model_name}&paintId=pspc0014&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
               alt="as"
             />
           </SwiperSlide>
@@ -54,7 +54,7 @@ console.log()
           <SwiperSlide key={idx}>
             <img
               className="object-contain"
-              src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${car.model_make}&modelFamily=${car.model_name}&paintId=pspc0014&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
+              src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${car.model_make_id}&modelFamily=${car.model_name}&paintId=pspc0014&fileType=webp&angle=23&aspectRatio=1.6&zoomType=fullscreen&width=1600&v3=true&margins=0`}
               alt="as"
             />
           </SwiperSlide>
