@@ -4,13 +4,13 @@ import Image from "next/image";
 import { SearchIcon, Stack, TagIcon } from "../Icon";
 import Link from "next/link";
 import { colors, colors_name } from "../Types/data";
-function ProductCard({ car }: { car: ICar }) {
+function ProductCard({ car, color }: { car: ICar; color: string }) {
   function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   return (
-    <div className="bg-white hover:drop-shadow-lg drop-shadow-md rounded-sm m-2">
-      <div className="relative bg-[#becae3] p-2 ">
+    <div className={`${(color=="black") ? "bg-[#f2e8de]" : "bg-[#232323]"} hover:drop-shadow-sm drop-shadow-sm rounded-sm `}>
+      <div className={`relative ${(color=="black") ? "bg-[#d0ccc9]" : "bg-[#42362a]"} p-2 `}>
         <img
           className="object-contain"
           src={`https://cdn.imagin.studio/getImage?&customer=copyright-imaginstudio&make=${
@@ -21,10 +21,10 @@ function ProductCard({ car }: { car: ICar }) {
           alt="car"
           loading="lazy"
         />
-        <div className="absolute bottom-0 left-0 bg-[#359bef] text-[#fff] px-5">
+        <div className={`absolute bottom-0 left-0 ${(color=="black") ? "bg-[#dd981c]" : "bg-[#8c8c8c]"} text-[#fff] px-5`}>
           ${numberWithCommas(Number(car.model_price.toFixed(0)))}
         </div>
-        <div className="absolute -bottom-5 right-5 bg-[#fff] text-[#359bef] p-2 rounded-full hover:bg-[#359bef] hover:text-white">
+        <div className={`absolute -bottom-5 right-5 ${(color=="black") ? "bg-[#f2e8de]" : "bg-[#232323]"} text-[#dd981c] p-2 rounded-full hover:bg-[#dd981c] hover:text-white`}>
           <Link
             href={{
               pathname: "/productPage",
@@ -35,13 +35,12 @@ function ProductCard({ car }: { car: ICar }) {
           </Link>
         </div>
       </div>
-      <div className="">
-        <div className="grid grid-cols-3 px-2 md:px-5 py-4 gap-x-5">
-          <div>
-            <div className="text-base">{car.model_make_id}</div>
-            <div className="text-xs text-[#8c8c8c]">{car.model_name}</div>
+        <div className="flex flex-col px-2 md:px-5 py-4 gap-x-5 space-y-5">
+          <div className="flex flex-col items-center justify-center">
+            <div className={`text-sm ${(color=="black") ? "text-[#8c8c8c]" : "text-[#dd981c]"}`}>{car.model_make_id}</div>
+            <div className={`text-base ${(color=="black") ? "text-[#232323]" : "text-[#f2e8de]"}`}>{car.model_name}</div>
           </div>
-          <div className="grid col-span-2 grid-cols-2 text-[#8c8c8c] text-center">
+          <div className=" grid grid-cols-2 text-[#8c8c8c] text-center">
             <div>
               <div className="text-xs">Year</div>
               <div className="text-sm">{car.model_year}</div>
@@ -60,7 +59,6 @@ function ProductCard({ car }: { car: ICar }) {
             </div>
           </div>
         </div>
-      </div>
       {/* <div className="bg-light-green p-2 text-white cursor-pointer">
         <Link
           href={{

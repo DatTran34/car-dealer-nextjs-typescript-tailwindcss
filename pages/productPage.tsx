@@ -37,7 +37,7 @@ const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand
     <motion.div 
     initial={{y:"100%"}}
     animate={{y: "0%"}}
-    transition={{duration: 0.75, ease: "easeOut"}}
+    transition={{duration: 0.25, ease: "easeOut"}}
     exit={{y:"100%"}}>
       <Head>
         <title>Car Dealer</title>
@@ -52,9 +52,7 @@ const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand
                 <div className="text-[#39C7A5]">
                   {car.model_make_id} {car.model_name}
                 </div>
-                <div className="text-3xl ">
-                  ${numberWithCommas(Number(car.model_price.toFixed(0)))}
-                </div>
+
               </div>
               <div className="flex flex-rows items-center justify-between ">
                 <div>
@@ -88,9 +86,14 @@ const ProductPage = ({ cars ,brands , query_id }: { cars: ICar[], brands: IBrand
                   <div>{colors_name[car.model_color]}</div>
                 </div>
               </div>
+              <div className="flex  flex-rows justify-between ">
+              <div className="text-3xl">
+                  ${numberWithCommas(Number(car.model_price.toFixed(0)))}
+                </div>
               <Button variant="gradient" color="blue">
                 Contact Us
               </Button>
+              </div>
             </div>
           </div>
           <AccordionProduct car={car} />

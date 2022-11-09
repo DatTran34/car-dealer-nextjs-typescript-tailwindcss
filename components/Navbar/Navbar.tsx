@@ -25,8 +25,8 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
 
 
   return (
-    <div className=" bg-white">
-      <div className="max-w-7xl text-sm mx-auto py-4 flex flex-row items-center justify-between space-x-2 md:space-x-6 p-4">
+    <div className=" bg-[#232323] text-[#f2e8de]">
+      <div className="max-w-7xl relative text-sm mx-auto py-4 flex flex-row items-center justify-between space-x-2 md:space-x-8 p-4 ">
         <Link href="/" >
           <motion.div
             initial={{
@@ -40,11 +40,11 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
               scale: 1,
             }}
             transition={{
-              duration: 1.5
+              duration: 0.5
             }}
             className="flex items-center space-x-2 cursor-pointer">
             <Image src={logo} alt="logo" width={70} height={70} />
-            <div className="hidden md:block">DT Motors</div>
+            
           </motion.div>
         </Link>
         <SearchBar cars={cars} />
@@ -63,11 +63,15 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
             scale: 1,
           }}
           transition={{
-            duration: 1.5
+            duration: 0.5
           }}
           className="hidden md:inline-flex flex flex-row items-center space-x-4">
           <div>Contact Us</div>
-          <Menu>
+          <Menu
+          animate={{
+            mount: { y: 0 },
+            unmount: { y: 25 },
+          }}>
             <MenuHandler>
               <div className="cursor-pointer">Car Brands</div>
             </MenuHandler>
@@ -84,9 +88,9 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
             }}>
             <MenuHandler>
               {session ? (
-                <Button variant="gradient">Hi {session.user?.name}</Button>
+                <Button color="amber" size="sm">Hi {session.user?.name}</Button>
               ) : (
-                <Button variant="gradient">Hi Customer</Button>
+                <Button color="amber" size="sm">Hi Customer</Button>
               )}
 
             </MenuHandler>
@@ -106,9 +110,9 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
       <Drawer isOpen={isOpenDrawer} setIsOpen={setIsOpenDrawer}>
         <div className="grid grid-cols-1 px-6 justify-center items-center space-y-4">
           {session ? (
-            <Button variant="gradient">Hi {session.user?.name}</Button>
+            <Button className="bg-[#dd981c]" >Hi {session.user?.name}</Button>
           ) : (
-            <Button variant="gradient">Hi Customer</Button>
+            <Button className="bg-[#dd981c]" >Hi Customer</Button>
           )}
           <AccorditionNavbar brands={brands} />
           {session ? (

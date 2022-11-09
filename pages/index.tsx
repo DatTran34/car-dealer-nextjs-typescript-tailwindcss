@@ -9,6 +9,7 @@ import { db } from '../config/firebase';
 import {collection,QueryDocumentSnapshot,DocumentData,query,where,limit,getDocs} from "@firebase/firestore";
 import { useState, useEffect } from 'react';
 import {motion} from "framer-motion"
+import Banner from '../components/HomePage/Banner'
 const carCollection = collection(db,'carlist');
 
 const Home: NextPage<{cars: ICar[] , brands: IBrand[]}> = props => {
@@ -23,14 +24,18 @@ const Home: NextPage<{cars: ICar[] , brands: IBrand[]}> = props => {
     <motion.div 
       initial={{y:"100%"}}
       animate={{y: "0%"}}
-      transition={{duration: 0.75, ease: "easeOut"}}
+      transition={{duration: 0.25, ease: "easeOut"}}
       exit={{y:"100%"}}
-      className="bg-[#F1F3F4]">
+      className='h-screen snap-y snap-mandatory overflow-scroll'
+      >
       <Head>
         <title>Car Dealer</title>
       </Head>
-      <Navbar cars={cars} brands={brands}/>
-        <main className="max-w-screen-2xl mx-auto">
+      <div className='snap-start h-screen'>
+        <Navbar cars={cars} brands={brands}/>
+        <Banner/>
+      </div>
+        <main className="">
         {loading ? (
           <div>
             <h2>Loading</h2>

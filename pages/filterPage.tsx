@@ -70,7 +70,7 @@ function filterPage({cars, brands, query_brand} : {cars: ICar[], brands: IBrand[
   }
 
   return (
-    <div className="bg-[#F1F3F4]">
+    <div className="">
       <Head>
         <title>Car Dealer</title>
       </Head>
@@ -88,7 +88,7 @@ function filterPage({cars, brands, query_brand} : {cars: ICar[], brands: IBrand[
     </div>
         ): (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg p-4 grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4">
+            <div className=" p-4 grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4">
               <FilterBox
                 title="Brands"
                 optionList={brands.map((brand,idx) => {return brand.brandName})}
@@ -109,9 +109,9 @@ function filterPage({cars, brands, query_brand} : {cars: ICar[], brands: IBrand[
                 setFilter={setSelectedSortByOption}
               />
             </div>
-            <div className="bg-white rounded-lg p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className=" p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredCars?.map((car, idx) => (
-                <ProductCard car={car} key={idx} />
+                <ProductCard car={car} key={idx} color="white"/>
               ))}
             </div>
           </div>
