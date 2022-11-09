@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { ReactNode } from 'react'
 import { Fragment, useState } from "react";
 import { DevicePhoneMobile, MapPin } from '../Icon';
@@ -46,14 +47,22 @@ function AccorditionNavbar({brands} : {brands : IBrand[]}) {
           </AccordionHeader>
           <AccordionBody>
               {
-                brands.map((brand,idx)=>(
-                  <div className='flex flex-row space-x-4 items-center cursor-pointer text-sm'>
-                    <img
-                      width={30}
-                      src={`https://www.auto-data.net/img/logos/${brand.brandName}.png`} alt="" />
+               brands.map((brand, idx) => (
+                <div key={idx} className='flex flex-row space-x-4 items-center cursor-pointer text-sm'>
+                  <img
+                    width={30}
+                    src={`https://www.auto-data.net/img/logos/${brand.brandName}.png`} alt="" />
+
+                  <Link
+                    href={{
+                      pathname: "/filterPage",
+                      query: { brand: brand.brandName }, // the data
+                    }}
+                  >
                     <div>{brand.brandName}</div>
-                  </div>
-                ))
+                  </Link>
+                </div>
+              ))
               }
           </AccordionBody>
         </Accordion>

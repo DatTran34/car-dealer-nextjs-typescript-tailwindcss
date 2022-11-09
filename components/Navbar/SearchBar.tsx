@@ -45,7 +45,7 @@ function SearchBar({ cars }: { cars: ICar[] }) {
                 </div>
                 {
                     isOpenSearchContainer && (
-                        <div className='absolute z-[15] w-full bg-white shadow-lg border mt-1.5 text-sm text-gray-700 rounded-lg'>
+                        <div className='absolute min-h-[35px] z-[15] w-full bg-white shadow-lg border mt-1.5 text-sm text-gray-700 rounded-lg'>
                             <div className='max-h-72 overflow-y-auto overflow-y-scroll'>
                                 <div className='px-2.5'>
                                     {
@@ -72,7 +72,6 @@ function SearchBar({ cars }: { cars: ICar[] }) {
                                                                 <div>{car.model_year} {car.model_make_id} {car.model_name} - {car.model_mileage} mileages</div>
                                                             </div>
                                                         </Link>
-
                                                     )
                                                 }</div>
                                     }

@@ -21,9 +21,6 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
 
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
 
-
-
-
   return (
     <div className=" bg-white">
       <div className="max-w-7xl text-sm mx-auto py-4 flex flex-row items-center justify-between space-x-2 md:space-x-6 p-4">
@@ -48,7 +45,7 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
           </motion.div>
         </Link>
         <SearchBar cars={cars} />
-        <div className="block md:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
+        <div className="block lg:hidden cursor-pointer" onClick={() => { setIsOpenDrawer(!isOpenDrawer) }}>
           <Bar3 />
         </div>
         <motion.div
@@ -65,16 +62,32 @@ function Navbar({ cars, brands }: { cars: ICar[], brands: IBrand[] }) {
           transition={{
             duration: 1.5
           }}
-          className="hidden md:inline-flex flex flex-row items-center space-x-4">
+          className="hidden lg:inline-flex flex flex-row items-center space-x-4">
           <div>Contact Us</div>
           <Menu>
             <MenuHandler>
               <div className="cursor-pointer">Car Brands</div>
             </MenuHandler>
             <MenuList>
-              <MenuItem>Menu Item 1</MenuItem>
-              <MenuItem>Menu Item 2</MenuItem>
-              <MenuItem>Menu Item 3</MenuItem>
+              {
+                brands.map((brand, idx) => (
+                  <div key={idx} className='w-full text-sm'>
+                    <Link
+                      href={{
+                        pathname: "/filterPage",
+                        query: { brand: brand.brandName }, // the data
+                      }}
+                    >
+                      <MenuItem className="w-full hover:bg-blue-100">
+                        <div className="flex flex-row items-center space-x-4"> <img
+                          width={30}
+                          src={`https://www.auto-data.net/img/logos/${brand.brandName}.png`} alt="" />
+                          <div>{brand.brandName}</div></div>
+                      </MenuItem>
+                    </Link>
+                  </div>
+                ))
+              }
             </MenuList>
           </Menu>
           <Menu
